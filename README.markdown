@@ -52,3 +52,22 @@ I know. That only works because my particular domain is tiny.
 Persistent::Store wraps Standard library's PStore to save objects to the filesystem in a transaction.
 
 Persistent::Store itself quacks like a Hash (:[], :[]=, :fetch, :delete and :each) so you can use a Hash, Memcached, another wrapper like Moneta (http://github.com/wycats/moneta/tree/master) or you own object store.
+
+## Installation
+
+This is so tiny that you can just copy the lib/persistent.rb and lib/persistent/store.rb files in you project (or clone them of course).
+
+You can also use it as a gem:
+
+    sudo gem install ismasan-persistent
+
+And then in your code:
+
+    require 'rubygems'
+    require 'persistent'
+
+    class SomeClass
+      include Persistent
+      ...
+    end
+
