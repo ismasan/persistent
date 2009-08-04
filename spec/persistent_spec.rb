@@ -1,34 +1,55 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-module Persistent
-  class Test
-    include Persistent
-    
-    attribute :name, :last_name
-    
-    def initialize(id)
-      self.id = id
-      self.attributes = store.fetch(id, {})
-    end
-    
+class PersistentPerson
+  include Persistent
+  
+  include Comparable
+  
+  attr_accessor :name, :last_name, :email
+  
+  def initialize(name, last_name, email)
+    @name, @last_name, @meail = name, last_name, email
+  end
+  
+  
+  def <=>(other)
+    self.name <=> other.name
   end
 end
 
-describe "Persistent" do
+PersistentPerson.store = Hash.new # Persistent::Store.new('test.store')
+
+describe Persistent do
+  
   before do
-    Persistent::Test.store = Hash.new
-    @test = Persistent::Test.new('abc')
+    @person = PersistentPerson.new('ismael', 'celis', nil)
   end
   
-  it "should have attributes" do
-    @test.respond_to?(:name).should be_true
-    @test.respond_to?(:last_name).should be_true
+  describe 'saving' do
+    it "should persists" do
+      @person.name = 'foo'
+      @person.last_name = 'bar'
+      @person.persist! 'abc'
+      
+      p2 = PersistentPerson.find('abc')
+      p2.should == @person
+      p2.name.should == 'foo'
+      p2.last_name.should == 'bar'
+      p2.email.should be_nil
+    end
+
+    it "should check it exists" do
+      @person.persist! 'abc'
+      PersistentPerson.exists?('abc').should be_true
+      PersistentPerson.exists?('zzz').should_not be_true
+    end
+    
+    it "should destroy" do
+      @person.persist! 'abc'
+      PersistentPerson.exists?('abc').should be_true
+      @person.destroy!
+      PersistentPerson.exists?('abc').should be_false
+    end
   end
   
-  it "should persist" do
-    @test.name = 'foo'
-    @test.save!
-    Persistent::Test.exists?('abc').should be_true
-    Persistent::Test.new('abc').should == @test
-  end
 end
