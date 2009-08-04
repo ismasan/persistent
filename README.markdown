@@ -1,32 +1,28 @@
 ## Basic persistence functionality for your Ruby objects
 
-This is not quite an object store at the moment, just a file-system based store for your object attributes. 
+This is a drop-in thin persistence layer for your Ruby objects. I wrote it for some toy Sinatra apps I'm writing because I can't be bothered with using DataMapper, CouchDB and the rest for something so small.
 
 The store can be anything that looks like a Hash.
 
-From the code:
+From the code comments:
 
     class Person
       include Persistent
-    
-      attribute :name, :last_name, :email
-    
-      def initialize(id)
-        self.id = id
-        self.attributes = store.fetch(id, {})
-      end
+      attr_accessor :name, :last_name
     end
-
+    
     Person.store = Persistent::Store.new('/path/to/store_file.store') # or anything that looks like a Hash.
     
-    o = Person.new( 'some_unique_id' )
+    o = Person.new
     
     o.name = 'Ismael'
     o.last_name = 'Celis'
     
-    o.save!
+    # == Save and namespace unique ID by class name
     
-    o2 = Person.new( 'some_unique_id' )
+    o.persist! 'some_unique_id'
+    
+    o2 = Person.find( 'some_unique_id' )
     
     o2.name # => 'Ismael'
     
@@ -36,16 +32,23 @@ From the code:
     
     Person.all.size # => 0
 
-## TODO
 
-Simplify this by storing whole objects instead of attributes. Stop thinking about relational databases!
+## Usage
 
-For one, the current implementation forces me to initialize objects with an ID. I want to initialize my objects however I want and just store them when I'm done. Something like:
+You can persist individual objects by key
 
-    p = Person.new('Ismael', 'Celis')
+    o = SomeObject.new
+    o.persist! 'some_key'
 
-    p.do_sonething!
+Keys are internally prefixed with the object's class name so you can store objects of different types using the same keys.
 
-    Person.save! 'some_unique_id', p # namespaces key by class so IDs don't collide
+... But after conversation with Martyn (http://github.com/mloughran) I'm planning to store one big object with the whole domain object space in it, so I can store the whole thing at once and forget about persistance and have fun with pure Ruby objects (look ma, no database!).
 
-    Person.find 'some_unique_id' # => p
+I know. That only works because my particular domain is tiny.
+
+
+## Object store
+
+Persistent::Store wraps Standard library's PStore to save objects to the filesystem in a transaction.
+
+Persistent::Store itself quacks like a Hash (:[], :[]=, :fetch, :delete and :each) so you can use a Hash, Memcached, another wrapper like Moneta (http://github.com/wycats/moneta/tree/master) or you own object store.
