@@ -1,6 +1,6 @@
 require 'pstore'
 module Persistent
-  module Store
+  class Store
     include Enumerable
     
     def initialize(key)
