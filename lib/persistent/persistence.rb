@@ -50,12 +50,20 @@ module Persistent
       end
     end
     
+    def new_record?
+      store[id].nil?
+    end
+    
     def save!
       store[id] = attributes
     end
     
     def destroy!
       store.delete(id)
+    end
+    
+    def ==(other)
+      self.class == other.class && self.id == other.id
     end
     
     protected
@@ -73,7 +81,7 @@ module Persistent
       end
 
       def all
-        store.map {|id| new(id)}
+        store.map {|id, attrs| new(id)}.sort
       end
     end
     
