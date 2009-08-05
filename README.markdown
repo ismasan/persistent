@@ -29,8 +29,8 @@ From the code comments:
     o2 == o # => true
     
     o.destroy!
-    
-    Person.all.size # => 0
+
+    Person.find( 'some_unique_id' ) # => nil
 
 
 ## Usage
