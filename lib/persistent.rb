@@ -29,8 +29,6 @@ module Persistent
   #
   #    o.destroy!
   #
-  #    Person.all.size # => 0
-  #
   def self.included(base)
     base.extend ClassMethods
     class << base
