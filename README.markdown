@@ -71,3 +71,6 @@ And then in your code:
       ...
     end
 
+## Other alternatives
+
+This library is meant for simple use cases. If you want serious object persistence please check solutions such as CouchDB (http://couchdb.apache.org/), DataMapper (http://github.com/datamapper/dm-core/tree/master) or the similarly named Persistable gem (http://github.com/andykent/persistable/tree/master)
