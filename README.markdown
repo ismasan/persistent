@@ -73,4 +73,6 @@ And then in your code:
 
 ## Other alternatives
 
-This library is meant for simple use cases. If you want serious object persistence please check solutions such as CouchDB (http://couchdb.apache.org/), DataMapper (http://github.com/datamapper/dm-core/tree/master) or the similarly named Persistable gem (http://github.com/andykent/persistable/tree/master)
+This library is meant for simple use cases. If you want serious object persistence please check solutions such as CouchDB (http://couchdb.apache.org/), DataMapper (http://github.com/datamapper/dm-core/tree/master) or the similarly named Persistable gem (http://github.com/andykent/persistable/tree/master).
+
+Also, Stone (http://github.com/ndemonner/stone/tree/master) looks pretty neat!
