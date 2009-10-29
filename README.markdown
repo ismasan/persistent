@@ -58,8 +58,10 @@ Persistent::Store itself quacks like a Hash (:[], :[]=, :fetch, :delete and :eac
 This is so tiny that you can just copy the lib/persistent.rb and lib/persistent/store.rb files in you project (or clone them of course).
 
 You can also use it as a gem:
+    # If you haven't done this before:
+    gem sources -a http://gemcutter.org
 
-    sudo gem install ismasan-persistent
+    sudo gem install persistent
 
 And then in your code:
 
